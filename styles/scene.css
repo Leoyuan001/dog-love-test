@@ -1,0 +1,147 @@
+/* ============================================================
+ * styles/scene.css —— 背景分层场景（窗户 / 太阳 / 草地）
+ * 五层视差：L0 天空 → L1 太阳+云 → L2 窗户+光束 → L3 狗狗 → L5 草地+花瓣
+ * ============================================================ */
+
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scene);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ---------- L0 天空 ---------- */
+.scene__sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    #FFE6BC 0%,
+    #FFF0D2 32%,
+    var(--cream) 62%,
+    #FFF6E9 100%);
+}
+
+/* ---------- L1 太阳 ---------- */
+.scene__sun {
+  position: absolute;
+  top: clamp(-30px, 1vw, 10px);
+  right: clamp(-20px, 2vw, 40px);
+  width: clamp(150px, 20vw, 260px);
+  height: auto;
+  animation: sunPulse var(--dur-sun) ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes sunPulse {
+  0%, 100% { transform: scale(1);    opacity: .92; }
+  50%      { transform: scale(1.06); opacity: 1; }
+}
+
+/* ---------- L1 云 ---------- */
+.scene__cloud {
+  position: absolute;
+  width: clamp(160px, 22vw, 320px);
+  height: auto;
+  opacity: .9;
+}
+.scene__cloud--1 { top: 9%;  left: -30%; animation: cloudDrift var(--dur-cloud) linear infinite; }
+.scene__cloud--2 { top: 22%; left: -55%; width: clamp(120px, 16vw, 230px);
+                   opacity: .75; animation: cloudDrift calc(var(--dur-cloud) * 1.4) linear infinite;
+                   animation-delay: -18s; }
+@keyframes cloudDrift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(160vw); }
+}
+
+/* ---------- L2 窗户 ---------- */
+.scene__window {
+  position: absolute;
+  top: clamp(20px, 5vh, 70px);
+  left: clamp(-30px, 1vw, 50px);
+  width: clamp(130px, 15vw, 230px);
+  height: auto;
+  filter: drop-shadow(0 8px 20px rgba(140, 90, 60, .16));
+}
+
+/* 窗口斜射进来的光束 */
+.scene__beam {
+  position: absolute;
+  top: 6%;
+  left: 6%;
+  width: 60vw;
+  height: 78vh;
+  background: linear-gradient(160deg,
+    rgba(255, 240, 200, .55) 0%,
+    rgba(255, 235, 190, .22) 38%,
+    rgba(255, 235, 190, 0) 72%);
+  transform: rotate(14deg);
+  transform-origin: top left;
+  animation: beamBreathe var(--dur-beam) ease-in-out infinite;
+}
+@keyframes beamBreathe {
+  0%, 100% { opacity: .75; }
+  50%      { opacity: 1; }
+}
+
+/* ---------- L5 栅栏 ---------- */
+.scene__fence {
+  position: absolute;
+  bottom: clamp(70px, 11vh, 130px);
+  right: 2vw;
+  width: clamp(110px, 14vw, 210px);
+  height: auto;
+  opacity: .85;
+}
+
+/* ---------- L5 草地 ---------- */
+.scene__grass {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: clamp(110px, 17vh, 210px);
+  transform-origin: bottom center;
+  animation: grassSway var(--dur-grass) ease-in-out infinite;
+}
+@keyframes grassSway {
+  0%, 100% { transform: skewX(0deg)   scaleY(1); }
+  50%      { transform: skewX(-1.1deg) scaleY(1.015); }
+}
+
+/* ---------- L5 花瓣 ---------- */
+.scene__petals { position: absolute; inset: 0; }
+.scene__petal {
+  position: absolute;
+  top: -6%;
+  width: var(--size, 22px);
+  height: auto;
+  opacity: .8;
+  animation: petalFall var(--fall, 16s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes petalFall {
+  0%   { transform: translate(0, 0) rotate(0deg);         opacity: 0; }
+  10%  { opacity: .85; }
+  90%  { opacity: .7; }
+  100% { transform: translate(var(--drift, 40px), 110vh) rotate(420deg); opacity: 0; }
+}
+
+/* ---------- 情绪联动：冷战 / 冷淡期场景时，太阳转橙、云变灰 ---------- */
+body.mood-tense .scene__sky {
+  background: linear-gradient(180deg,
+    #FFD9A8 0%, #FFE7C6 34%, #FBF0E0 64%, var(--cream) 100%);
+  transition: background 1.2s ease;
+}
+body.mood-tense .scene__sun { filter: hue-rotate(-14deg) saturate(1.15); }
+body.mood-tense .scene__cloud { filter: brightness(.94) saturate(.7); }
+
+/* ---------- 移动端：场景元素降级但不删除 ---------- */
+@media (max-width: 768px) {
+  /* 太阳必须收小并挪进角落，否则会压住标题 */
+  .scene__sun { width: 112px; top: 6px; right: -30px; opacity: .9; }
+  .scene__window { width: 92px; opacity: .6; top: 4px; left: -18px; }
+  .scene__beam { opacity: .45; }
+  .scene__fence { display: none; }
+  .scene__cloud--2 { display: none; }
+  .scene__cloud--1 { width: 150px; opacity: .6; }
+}

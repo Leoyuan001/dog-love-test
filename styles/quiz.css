@@ -1,0 +1,188 @@
+/* ============================================================
+ * styles/quiz.css —— 答题页
+ * 核心要求：题目与选项被可爱的狗狗包围，但狗狗绝不遮挡题干与选项
+ * ============================================================ */
+
+/* ---------- 进度：一排小爪印 ---------- */
+.quiz__top { width: min(92vw, 700px); margin-bottom: clamp(10px, 2vh, 20px); }
+
+.paws {
+  position: relative;
+  height: 14px;
+  border-radius: var(--radius-pill);
+  background: var(--cream-dim);
+  border: 2px solid var(--cocoa-18);
+}
+.paws__fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--sun), var(--honey));
+  transition: width .35s ease;
+}
+.paws__paw {
+  position: absolute;
+  top: 50%;
+  font-size: 20px;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  transition: left .35s ease;
+  filter: drop-shadow(0 2px 3px rgba(140, 90, 60, .3));
+}
+.quiz__count {
+  margin-top: 8px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cocoa-70);
+}
+
+/* ---------- 舞台 ---------- */
+.quiz-stage {
+  position: relative;
+  width: min(92vw, 700px);
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- 探头的狗狗 ----------
+ * 硬约束：绝对定位在卡片外缘 + pointer-events: none，
+ * 卡片本身不透明，因此永远不会遮挡题干与选项。 */
+.peek {
+  position: absolute;
+  width: clamp(92px, 13.5vw, 156px);
+  pointer-events: none;
+  z-index: 1;
+  animation: peekBob 3.6s ease-in-out infinite;
+  animation-delay: var(--peek-delay, 0s);
+}
+.peek img { width: 100%; height: auto; }
+
+.peek[data-slot="0"] { left: -6px;  top: 2%; }
+.peek[data-slot="1"] { left: -6px;  bottom: 2%; }
+.peek[data-slot="2"] { right: -6px; top: 2%;    transform: scaleX(-1); }
+.peek[data-slot="3"] { right: -6px; bottom: 2%; transform: scaleX(-1); }
+/* 右侧的狗镜像后，动画的 translateY 不受影响 */
+.peek[data-slot="2"], .peek[data-slot="3"] { animation-name: peekBobFlipped; }
+
+@keyframes peekBob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+@keyframes peekBobFlipped {
+  0%, 100% { transform: scaleX(-1) translateY(0); }
+  50%      { transform: scaleX(-1) translateY(-5px); }
+}
+
+/* 切题时狗狗「探头再缩回」 */
+.quiz-stage.is-switching .peek { animation: peekIn .6s cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes peekIn {
+  0%   { opacity: 0; }
+  35%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* ---------- 题目卡 ---------- */
+.quiz-card {
+  position: relative;
+  z-index: 3;
+  width: min(100%, 540px);
+  padding: clamp(20px, 3.4vw, 34px) clamp(18px, 3vw, 32px);
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  border: 3px solid var(--cocoa);
+  box-shadow: var(--shadow);
+}
+.quiz-card.is-out { animation: cardOut .22s ease forwards; }
+.quiz-card.is-in  { animation: cardIn .34s cubic-bezier(.34, 1.4, .64, 1) both; }
+
+@keyframes cardOut {
+  to { opacity: 0; transform: translateY(-20px); }
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.quiz-card__scene {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--cream-dim);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cocoa-70);
+  letter-spacing: .04em;
+}
+.quiz-card__q {
+  font-size: clamp(17px, 2.4vw, 23px);
+  line-height: 1.6;
+  color: var(--cocoa);
+  margin-bottom: clamp(16px, 2.6vw, 26px);
+}
+
+/* ---------- 选项 ---------- */
+.options { display: flex; flex-direction: column; gap: 10px; }
+
+.opt {
+  position: relative;
+  width: 100%;
+  padding: 13px 18px;
+  text-align: left;
+  border-radius: 16px;
+  background: var(--cream);
+  border: 2px solid var(--cocoa-18);
+  font-size: clamp(14px, 1.7vw, 16px);
+  font-weight: 600;
+  color: var(--cocoa);
+  transition: background-color .16s ease, border-color .16s ease, transform .16s ease;
+}
+.opt:hover:not(.is-picked) {
+  background: #FFEFCE;
+  border-color: var(--honey);
+  transform: translateX(3px);
+}
+.opt:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 2px; }
+.opt.is-picked {
+  background: #FFE6B8;
+  border-color: var(--terracotta);
+  animation: optPop .3s cubic-bezier(.34, 1.56, .64, 1);
+}
+@keyframes optPop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.035); }
+  100% { transform: scale(1); }
+}
+/* 选中时弹出一颗小爪印 */
+.opt.is-picked::after {
+  content: "🐾";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  font-size: 17px;
+  animation: pawPop .45s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+@keyframes pawPop {
+  0%   { opacity: 0; transform: translateY(-50%) scale(.3); }
+  60%  { opacity: 1; transform: translateY(-50%) scale(1.25); }
+  100% { opacity: 1; transform: translateY(-50%) scale(1); }
+}
+
+/* ---------- 底部导航 ---------- */
+.quiz__nav { margin-top: clamp(14px, 2.4vh, 26px); }
+.quiz__nav .btn[disabled] { opacity: 0; pointer-events: none; }
+
+/* ---------- 移动端：狗狗减到 2 只，绝不牺牲可读性 ---------- */
+@media (max-width: 768px) {
+  .peek { width: 72px; }
+  .peek[data-slot="0"], .peek[data-slot="2"] { display: none; }
+  .peek[data-slot="1"] { left: -4px; bottom: -26px; }
+  .peek[data-slot="3"] { right: -4px; bottom: -26px; }
+  .quiz-card { width: min(100%, 460px); }
+  .quiz-stage { margin-bottom: 30px; }
+}
+
+@media (max-width: 480px) {
+  .peek[data-slot="1"] { display: none; }
+  .peek { width: 66px; }
+}

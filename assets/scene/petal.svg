@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+  <!-- 飘落的花瓣 -->
+  <path d="M20 4 C30 10 34 20 28 30 C24 36 16 36 12 30 C6 20 10 10 20 4 Z"
+        fill="#F2A65A" opacity="0.85"/>
+  <path d="M20 8 C25 14 26 22 22 28" fill="none" stroke="#E2725B"
+        stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+</svg>

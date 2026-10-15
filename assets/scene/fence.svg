@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 150" width="240" height="150">
+  <!-- 小栅栏：木色，点缀草地 -->
+  <g fill="#C08A5E">
+    <rect x="4"   y="34" width="26" height="116" rx="8"/>
+    <rect x="46"  y="34" width="26" height="116" rx="8"/>
+    <rect x="88"  y="34" width="26" height="116" rx="8"/>
+    <rect x="130" y="34" width="26" height="116" rx="8"/>
+    <rect x="172" y="34" width="26" height="116" rx="8"/>
+    <rect x="214" y="34" width="26" height="116" rx="8"/>
+  </g>
+  <g fill="#D6A276">
+    <polygon points="4,34 30,34 17,12"/>
+    <polygon points="46,34 72,34 59,12"/>
+    <polygon points="88,34 114,34 101,12"/>
+    <polygon points="130,34 156,34 143,12"/>
+    <polygon points="172,34 198,34 185,12"/>
+    <polygon points="214,34 240,34 227,12"/>
+  </g>
+  <g fill="#A9714A">
+    <rect x="0" y="60"  width="240" height="14" rx="7"/>
+    <rect x="0" y="112" width="240" height="14" rx="7"/>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 150" width="320" height="150">
+  <!-- 暖白色软云 -->
+  <g fill="#FFFDF8" opacity="0.92">
+    <ellipse cx="90"  cy="96" rx="72" ry="46"/>
+    <ellipse cx="160" cy="76" rx="86" ry="58"/>
+    <ellipse cx="232" cy="100" rx="66" ry="42"/>
+    <rect x="24" y="96" width="272" height="42" rx="21"/>
+  </g>
+  <g fill="#FFF0DC" opacity="0.75">
+    <ellipse cx="160" cy="120" rx="120" ry="24"/>
+  </g>
+</svg>

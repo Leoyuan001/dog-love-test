@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>你的恋爱底色是哪只狗？| 荣格八维恋爱测试</title>
+<meta name="description" content="用荣格八维探测你在亲密关系里最本能的反应方式，折叠成 4 轴 16 型，每一型对应一种气质契合的犬种。36 道题，约 7 分钟，全程在你的浏览器里算完。">
+<meta name="theme-color" content="#FFF6E9">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+<!-- ============================================================
+     社交分享预览。
+     https://leoyuan001.github.io/dog-love-test/ 与 https://leoyuan001.github.io/dog-love-test/assets/og-image.jpg 是构建占位符：
+     用 node tools/build-dist.js --base-url=https://你的域名 生成时，
+     会被替换成绝对地址（微信 / Facebook 等抓取器不认相对路径）。
+     直接双击 index.html 本地查看时会保持相对路径，不影响使用。
+     ============================================================ -->
+<link rel="canonical" href="https://leoyuan001.github.io/dog-love-test/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="你的恋爱底色是哪只狗？">
+<meta property="og:title" content="你的恋爱底色是哪只狗？">
+<meta property="og:description" content="荣格八维 × 4 轴 16 型 × 16 只狗。36 道题，约 7 分钟，无需注册。">
+<meta property="og:url" content="https://leoyuan001.github.io/dog-love-test/">
+<meta property="og:image" content="https://leoyuan001.github.io/dog-love-test/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="你的恋爱底色是哪只狗？">
+<meta name="twitter:description" content="荣格八维 × 4 轴 16 型 × 16 只狗。36 道题，约 7 分钟。">
+<meta name="twitter:image" content="https://leoyuan001.github.io/dog-love-test/assets/og-image.jpg">
+
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/scene.css">
+<link rel="stylesheet" href="styles/quiz.css">
+<link rel="stylesheet" href="styles/result.css">
+<link rel="stylesheet" href="styles/ui.css">
+</head>
+<body>
+
+<!-- ============================================================
+     场景层：天空 → 太阳+云 → 窗户+光束 → 草地+花瓣（五层视差）
+     全部为装饰性元素，对辅助技术隐藏
+     ============================================================ -->
+<div class="scene" aria-hidden="true">
+  <div class="scene__sky"></div>
+
+  <img class="scene__sun" src="assets/scene/sun.svg" alt="" width="220" height="220">
+  <img class="scene__cloud scene__cloud--1" src="assets/scene/cloud.svg" alt="" width="320" height="150">
+  <img class="scene__cloud scene__cloud--2" src="assets/scene/cloud.svg" alt="" width="230" height="108">
+
+  <img class="scene__window" src="assets/scene/window.svg" alt="" width="260" height="320">
+  <div class="scene__beam"></div>
+
+  <img class="scene__fence" src="assets/scene/fence.svg" alt="" width="240" height="150">
+  <img class="scene__grass" src="assets/scene/grass.svg" alt="" width="1440" height="240">
+  <div class="scene__petals"></div>
+</div>
+
+<main id="app">
+
+  <!-- ========================= 主页面 ========================= -->
+  <section class="view view--landing" id="view-landing">
+    <div class="landing__head">
+      <h1 class="landing__title" id="landingTitle"></h1>
+      <p class="landing__sub" id="landingSub"></p>
+    </div>
+
+    <!-- 欢迎回来 / 继续上次：由 app.js 填充，无存档时保持隐藏 -->
+    <div id="welcomeSlot"></div>
+
+    <div class="stage" id="stage">
+      <div class="ring" id="dogArc" role="group" aria-label="十六只候选狗狗"></div>
+      <button class="btn-start" id="btnStart" type="button" data-i18n="start">点击开始</button>
+    </div>
+
+    <p class="landing__meta" data-i18n="landingMeta">36 道题 · 约 7 分钟 · 结果仅供自我探索</p>
+
+    <!-- 底部辅助入口：免责说明 / 使用说明 / 语言切换 -->
+    <div class="landing__footer">
+      <button class="linkbtn" id="btnAbout" type="button" data-i18n="aboutTitle">关于这个测试</button>
+      <span class="sep" aria-hidden="true">·</span>
+      <button class="linkbtn" id="btnHelp" type="button" data-i18n="helpTitle">怎么用</button>
+      <span class="sep" aria-hidden="true">·</span>
+      <button class="linkbtn" id="btnLang" type="button" data-i18n="langLabel">English</button>
+    </div>
+  </section>
+
+  <!-- ========================= 答题页 ========================= -->
+  <section class="view view--quiz" id="view-quiz" aria-live="polite">
+    <div class="quiz__top">
+      <div class="paws">
+        <div class="paws__fill" id="pawsFill" style="width:0%"></div>
+        <span class="paws__paw" id="pawsPaw" style="left:0%">🐾</span>
+      </div>
+      <p class="quiz__count" id="quizCount"></p>
+    </div>
+
+    <div class="quiz-stage" id="quizStage">
+      <div class="peek" data-slot="0"><img src="" alt="" width="138" height="138"></div>
+      <div class="peek" data-slot="1"><img src="" alt="" width="138" height="138"></div>
+      <div class="peek" data-slot="2"><img src="" alt="" width="138" height="138"></div>
+      <div class="peek" data-slot="3"><img src="" alt="" width="138" height="138"></div>
+
+      <div class="quiz-card" id="quizCard">
+        <p class="quiz-card__scene" id="qScene"></p>
+        <h2 class="quiz-card__q" id="qText"></h2>
+        <div class="options" id="options" role="group" aria-labelledby="qText"></div>
+      </div>
+    </div>
+
+    <div class="quiz__nav">
+      <button class="btn btn--ghost" id="btnBack" type="button" data-i18n="back">← 上一题</button>
+    </div>
+  </section>
+
+  <!-- ========================= 结果页 ========================= -->
+  <section class="view view--result" id="view-result">
+    <div class="result" id="resultRoot"></div>
+  </section>
+
+</main>
+
+<!-- 通用弹窗 -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal__backdrop" data-close="1"></div>
+  <div class="modal__dialog">
+    <button class="modal__close" id="modalClose" type="button" aria-label="关闭">✕</button>
+    <h2 class="modal__title" id="modalTitle"></h2>
+    <div class="modal__body" id="modalBody"></div>
+    <div class="modal__foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<!-- 轻提示 -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ============================================================
+     数据层
+     中英两份**同时加载**（约 40KB），由 i18n.js 决定用哪一份覆盖 window.TEST_*。
+     这样 scoring.js / app.js 完全不用改，读到的就是当前语言。
+     ============================================================ -->
+<script src="data/meta.js"></script>
+<script src="data/questions.js"></script>
+<script src="data/results.js"></script>
+<script src="data/compat.js"></script>
+<script src="data/ui.zh.js"></script>
+
+<script src="data/en/meta.js"></script>
+<script src="data/en/axes.js"></script>
+<script src="data/en/questions.js"></script>
+<script src="data/en/results-ntnf.js"></script>
+<script src="data/en/results-sjsp.js"></script>
+<script src="data/en/compat.js"></script>
+
+<!-- 语言选择：必须在 scoring.js / app.js 之前 -->
+<script src="scripts/i18n.js"></script>
+<!-- 本机记忆 -->
+<script src="scripts/store.js"></script>
+<!-- 计分引擎 -->
+<script src="scripts/scoring.js"></script>
+<script src="scripts/compat.js"></script>
+<!-- 交互 -->
+<script src="scripts/app.js"></script>
+</body>
+</html>

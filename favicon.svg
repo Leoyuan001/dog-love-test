@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- 爪印 favicon：形状简单，16px 下依然认得出 -->
+  <rect width="64" height="64" rx="15" fill="#FFF6E9"/>
+  <g fill="#F2A65A" stroke="#8C5A3C" stroke-width="3" stroke-linejoin="round">
+    <ellipse cx="15.5" cy="26" rx="6" ry="7.6"/>
+    <ellipse cx="26"   cy="18.5" rx="6.2" ry="8.2"/>
+    <ellipse cx="38"   cy="18.5" rx="6.2" ry="8.2"/>
+    <ellipse cx="48.5" cy="26" rx="6" ry="7.6"/>
+    <path d="M32 30c10.5 0 16.5 7.4 16.5 14 0 5.6-4.6 8.4-8.4 6.6-2.8-1.3-5.2-2.2-8.1-2.2s-5.3.9-8.1 2.2C20.1 52.4 15.5 49.6 15.5 44c0-6.6 6-14 16.5-14z"/>
+  </g>
+</svg>

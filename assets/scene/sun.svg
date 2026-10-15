@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+  <!-- 太阳：带光晕与笑脸，全页的「心情温度计」 -->
+  <defs>
+    <radialGradient id="glow">
+      <stop offset="45%" stop-color="#FFC857" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#FFC857" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 光晕 -->
+  <circle cx="110" cy="110" r="108" fill="url(#glow)"/>
+
+  <!-- 光芒 -->
+  <g stroke="#FFC857" stroke-width="11" stroke-linecap="round" opacity="0.9">
+    <line x1="110" y1="14"  x2="110" y2="38"/>
+    <line x1="110" y1="182" x2="110" y2="206"/>
+    <line x1="14"  y1="110" x2="38"  y2="110"/>
+    <line x1="182" y1="110" x2="206" y2="110"/>
+    <line x1="42"  y1="42"  x2="59"  y2="59"/>
+    <line x1="161" y1="161" x2="178" y2="178"/>
+    <line x1="178" y1="42"  x2="161" y2="59"/>
+    <line x1="59"  y1="161" x2="42"  y2="178"/>
+  </g>
+
+  <!-- 日面 -->
+  <circle cx="110" cy="110" r="66" fill="#FFD072"/>
+  <circle cx="110" cy="110" r="66" fill="none" stroke="#8C5A3C" stroke-width="8"/>
+
+  <!-- 笑眼 -->
+  <path d="M74 104 q12 -16 24 0" fill="none" stroke="#8C5A3C" stroke-width="7" stroke-linecap="round"/>
+  <path d="M122 104 q12 -16 24 0" fill="none" stroke="#8C5A3C" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- 微笑 -->
+  <path d="M92 132 q18 18 36 0" fill="none" stroke="#8C5A3C" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- 腮红 -->
+  <ellipse cx="72" cy="126" rx="12" ry="8" fill="#E2725B" opacity="0.4"/>
+  <ellipse cx="148" cy="126" rx="12" ry="8" fill="#E2725B" opacity="0.4"/>
+</svg>

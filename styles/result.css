@@ -1,0 +1,238 @@
+/* ============================================================
+ * styles/result.css —— 结果页
+ * ============================================================ */
+
+.result { width: min(94vw, 720px); }
+
+/* ---------- 主角狗 ---------- */
+.hero { text-align: center; margin-bottom: clamp(10px, 2vh, 20px); }
+
+.hero__dog {
+  width: clamp(150px, 30vw, 250px);
+  height: auto;
+  margin: 0 auto;
+  animation: heroFloat 3.4s ease-in-out infinite;
+  filter: drop-shadow(0 14px 22px rgba(140, 90, 60, .22));
+}
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0)     rotate(-1.5deg); }
+  50%      { transform: translateY(-9px)  rotate(1.5deg); }
+}
+
+.hero__badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--cream-dim);
+  border: 2px solid var(--cocoa-18);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--cocoa-70);
+}
+.hero__name {
+  font-family: var(--font-title);
+  font-size: clamp(26px, 5vw, 42px);
+  margin-top: 6px;
+}
+.hero__tagline {
+  margin-top: 8px;
+  font-size: clamp(14px, 1.8vw, 17px);
+  font-weight: 600;
+  color: var(--terracotta);
+}
+
+/* ---------- 通用卡片 ---------- */
+.card-sec {
+  margin-top: 16px;
+  padding: clamp(16px, 2.6vw, 24px) clamp(16px, 2.6vw, 26px);
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  border: 3px solid var(--cocoa-18);
+  box-shadow: var(--shadow-sm);
+}
+.card-sec__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: clamp(15px, 1.9vw, 18px);
+  margin-bottom: 12px;
+}
+.card-sec__title::before {
+  content: "";
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--honey);
+  flex: none;
+}
+
+.prose { font-size: clamp(14px, 1.7vw, 16px); color: var(--cocoa-70); }
+
+/* ---------- 列表 ---------- */
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.list li {
+  position: relative;
+  padding-left: 26px;
+  font-size: clamp(14px, 1.7vw, 16px);
+  line-height: 1.7;
+}
+.list li::before {
+  content: "🐾";
+  position: absolute;
+  left: 0; top: 1px;
+  font-size: 14px;
+  opacity: .85;
+}
+.list--pitfall li::before { content: "🦴"; }
+
+/* ---------- 八维序列 ---------- */
+.stack { display: grid; gap: 14px; }
+.stack__row { display: grid; grid-template-columns: auto 1fr; gap: 10px 12px; align-items: baseline; }
+.stack__role {
+  grid-column: 1;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: var(--paper);
+  background: var(--honey);
+  border-radius: var(--radius-pill);
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+.stack__row--dom .stack__role { background: var(--terracotta); }
+.stack__fn { grid-column: 2; font-size: clamp(14px, 1.7vw, 16px); font-weight: 700; }
+.stack__fn span { font-weight: 500; color: var(--cocoa-70); font-size: .92em; }
+.stack__love {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  color: var(--cocoa-70);
+  padding-left: 2px;
+}
+
+/* ---------- 八个功能的能量条 ---------- */
+.bars { display: grid; gap: 9px; }
+.bar { display: grid; grid-template-columns: 46px 1fr auto; gap: 10px; align-items: center; }
+.bar__id { font-size: 12px; font-weight: 700; color: var(--cocoa-70); }
+.bar__track {
+  display: block;
+  height: 12px;
+  border-radius: var(--radius-pill);
+  background: var(--cream-dim);
+  overflow: hidden;
+}
+/* 能量条长度是静态的，直接由内联 --w 决定。
+ * 关键：.bar__fill 是 <span>，必须显式 display:block——
+ * 行内元素的 width / height 会被浏览器直接忽略，条子会整个塌成 0。
+ * （这个坑排查了很久：一开始以为是 requestAnimationFrame 不产帧，
+ *   后来又怀疑 animation-fill-mode 停在 from，其实都只是撞上了同一个 display 问题。）
+ * 入场动效因此改成一束不影响几何的微光扫过，动画跑不跑都不影响长度正确。 */
+.bar__fill {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--honey);
+  width: var(--w, 0%);
+}
+.bar__fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .6), transparent);
+  transform: translateX(-100%);
+  animation: barShine 1.4s ease-out .25s 1 both;
+}
+@keyframes barShine {
+  to { transform: translateX(220%); }
+}
+.bar--dom .bar__fill { background: var(--terracotta); }
+.bar--dom .bar__id { color: var(--terracotta); }
+.bar__val { font-size: 12px; font-weight: 700; color: var(--cocoa-70); min-width: 28px; text-align: right; }
+
+/* ---------- 压力下的你 ---------- */
+.stress__label {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--terracotta);
+  color: var(--paper);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ---------- 合拍 ---------- */
+.match { display: grid; gap: 12px; }
+.match__line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; }
+.match__k { font-weight: 700; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px 5px 5px;
+  border-radius: var(--radius-pill);
+  background: var(--cream);
+  border: 2px solid var(--cocoa-18);
+  font-size: 13px;
+  font-weight: 600;
+}
+.chip img { width: 26px; height: 26px; }
+
+/* ---------- 成长提示 ---------- */
+.tip {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.tip__icon { font-size: 26px; line-height: 1; flex: none; }
+
+/* ---------- 分享卡片 ---------- */
+.share {
+  margin-top: 18px;
+  padding: clamp(20px, 3vw, 30px);
+  border-radius: var(--radius-card);
+  background: linear-gradient(160deg, #FFF0CE 0%, #FFE3AE 55%, #FFD79A 100%);
+  border: 4px dashed var(--cocoa-40);
+  text-align: center;
+}
+.share__dog { width: clamp(90px, 18vw, 130px); margin: 0 auto 10px; }
+.share__text {
+  font-family: var(--font-title);
+  font-size: clamp(17px, 2.6vw, 24px);
+  color: var(--cocoa);
+  line-height: 1.5;
+}
+.share__foot { margin-top: 10px; font-size: 12px; color: var(--cocoa-70); }
+
+/* ---------- 底部对比彩蛋：16 只狗一排，主角在中间 ---------- */
+.lineup {
+  margin-top: 22px;
+  padding: 14px 10px;
+  border-radius: var(--radius-card);
+  background: rgba(255, 253, 248, .6);
+  border: 3px solid var(--cocoa-10);
+}
+.lineup__title { text-align: center; font-size: 13px; font-weight: 700; color: var(--cocoa-70); margin-bottom: 10px; }
+.lineup__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 4px;
+}
+.lineup__dog { width: clamp(38px, 6.4vw, 62px); opacity: .5; transition: opacity .2s ease, transform .2s ease; }
+.lineup__dog:hover { opacity: 1; transform: translateY(-3px); }
+.lineup__dog--me {
+  opacity: 1;
+  width: clamp(56px, 9vw, 86px);
+  animation: heroFloat 3.4s ease-in-out infinite;
+  filter: drop-shadow(0 6px 10px rgba(140, 90, 60, .28));
+}
+
+/* ---------- 备注 / 免责 ---------- */
+.notes { margin-top: 18px; font-size: 12.5px; color: var(--cocoa-70); line-height: 1.8; }
+.notes p + p { margin-top: 6px; }
+
+.result__foot { margin-top: 22px; text-align: center; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
